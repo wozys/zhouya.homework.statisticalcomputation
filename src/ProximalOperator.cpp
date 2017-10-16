@@ -49,8 +49,8 @@ Rcpp::List ProximalOperator(const arma::mat& X, const arma::colvec& y,double lam
   for(int i=0;i<=Maxiteration-1;i++)
   {
     betaold=beta;
+    XTyXXBeta=X.t()*(y-X*beta);
     for(int j=0;j<=p-1;j++){
-      XTyXXBeta=X.t()*(y-X*beta);
       beta(j)=soft_th(beta(j)+XTyXXBeta(j)/(M*n),lambda/M);
     }
     ite=ite+1;

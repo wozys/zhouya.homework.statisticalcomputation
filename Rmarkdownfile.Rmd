@@ -1,0 +1,137 @@
+---
+title: "R Packages for LASSO"
+author: Zhou Ya
+date: 2017.10.15
+output: ioslides_presentation
+
+    
+---
+
+# Generate Data
+
+## Get normalized data "XData" and "YData"  
+```{r}
+n = 100
+p = 500
+sigma_noise = 0.5
+beta = rep(0, p)
+beta[1:6] = c(5,10,3,80,90,10)
+XData = matrix(rnorm(n*p,sd=10), nrow = n, ncol=p)
+X=XData
+for (i in 1:500){
+  X[,i]=((X[,i]-sum(X[,i])/n))/((var(X[,i])*99/100)^0.5)
+}
+YData = X %*% beta + rnorm(n, sd = sigma_noise)
+YData=YData-sum(YData)/100
+XData=X
+```
+
+
+# Algorithm for LASSO
+
+## Coordinate Descent for LASSO(lambda=1)
+```{r}
+library(zhouyahomework1)
+# Coordinate Descent for LASSO
+betaHat1list = CoordinateDescent(XData,YData,1)
+betaHat1=unlist(betaHat1list["betahat"])
+diff1 = betaHat1 - beta
+# L2 loss
+L2Loss1 = sqrt(sum(diff1^2))
+# True Positive Rate
+TP1 = sum(abs(beta)>0 & abs(betaHat1)>0) / sum(abs(beta)>0)
+# True Negative Rate
+TN1 = sum(abs(beta)==0 & abs(betaHat1)==0) / sum(abs(beta)==0)
+# Numbers of Iteration
+ite1=unlist(betaHat1list["iteration"])
+# Values of Objective Function
+f1=unlist(betaHat1list["object function"])
+```
+
+
+## Proximal Operator for LASSO(lambda=1)
+```{r}
+library(zhouyahomework1)
+# Proximal Operator for LASSO
+betaHat2list=ProximalOperator(XData, YData, 1)
+betaHat2 = unlist(betaHat2list["betahat"])
+diff2 = betaHat2 - beta
+# L2 loss
+L2Loss2 = sqrt(sum(diff2^2))
+# True Positive Rate
+TP2 = sum(abs(beta)>0 & abs(betaHat2)>0) / sum(abs(beta)>0)
+# True Negative Rate
+TN2 = sum(abs(beta)==0 & abs(betaHat2)==0) / sum(abs(beta)==0)
+# Numbers of Iteration
+ite2=unlist(betaHat2list["iteration"])
+# Values of Objective Function
+f2=unlist(betaHat2list["object function"])
+```
+
+
+## Compare these two algorithms
+- Some Indexes
+- L2 loss and True Positive rate
+```{r}
+cat("the L2 loss for Coordinate Descentand Proximal Operator 
+    are:",L2Loss1,L2Loss2)
+cat("the True Positive Rate for Coordinate Descent and Proximal 
+    Operator are:",TP1,TP2)
+```
+
+## Compare these two algorithms
+- True Negative Rate and numbers of iteration
+```{r}
+cat("the True Negative Rate for Coordinate Descent and Proximal 
+    Operator are:",TN1,TN2)
+cat("the numbers of iteration for Coordinate Descent and Proximal 
+    Operator are:",ite1,ite2)
+```
+
+## Compare these two algorithms
+- The System time for lambda=1
+```{r}
+system.time(CoordinateDescent(XData,YData,1))
+system.time(ProximalOperator(XData, YData, 1))
+```
+
+## Compare these two algorithms
+- The following plot for values of objective funcion and corressponding objective funcions
+- The "X-axis" represents iterations and the "Y-axis" represents log10 values of objective function
+- The red line is for Proximal Operator while the black is for Coordinate Descent
+```{r}
+# log 10 Values of Objective Funcion
+f11=log10(f1[1:ite1])
+f22=log10(f2[1:ite2])
+```
+
+---
+```{r}
+#Notation: the case is lambda=1
+#plot log10 values of object functions and numbers of iteration
+plot(1:ite2,f22,xlab="iteration",
+ylab="log object function",
+main="Coordinate Descent VS Proximal Operator ",
+     type="s",col=2)
+lines(1:ite1,f11,col=1)
+legend("topright",inset=0.05,
+c("Proximal Operator","Coordinate Descent"),
+lty=c(1,1),col=c("red","black"))
+```
+---
+
+# Conclusion
+## Conclusion for lambda=1
+- Coordinate Descent has less L2 loss but both will
+- Both will in TP and TN
+- Coordinate Descent has far less iteration numbers
+- Coordinate Descent has far less system.time
+
+<div class="red2">
+Coordinate Descent for LASSO is better if lambda=1!
+</div>
+
+
+# Thank You!
+# Written by Zhou Ya and guided by He shiyuan
+

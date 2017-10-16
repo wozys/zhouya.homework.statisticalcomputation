@@ -28,7 +28,7 @@
 #' betaHat1list = CoordinateDescent(XData,YData,1)
 #' betaHat1=unlist(betaHat1list["betahat"])
 CoordinateDescent <- function(X, y, lambda) {
-    .Call('zhouyahomework1_CoordinateDescent', PACKAGE = 'zhouyahomework1', X, y, lambda)
+    .Call('_zhouyahomework1_CoordinateDescent', PACKAGE = 'zhouyahomework1', X, y, lambda)
 }
 
 #' The algorithm of Proximal Operator for LASSO
@@ -58,6 +58,6 @@ CoordinateDescent <- function(X, y, lambda) {
 #' betaHat2list=ProximalOperator(YData, XData, 1)
 #' betaHat2 = unlist(betaHat2list["betahat"])
 ProximalOperator <- function(X, y, lambda) {
-    .Call('zhouyahomework1_ProximalOperator', PACKAGE = 'zhouyahomework1', X, y, lambda)
+    .Call('_zhouyahomework1_ProximalOperator', PACKAGE = 'zhouyahomework1', X, y, lambda)
 }
 

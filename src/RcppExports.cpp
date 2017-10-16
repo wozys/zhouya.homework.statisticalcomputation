@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // CoordinateDescent
 Rcpp::List CoordinateDescent(const arma::mat& X, const arma::colvec& y, double lambda);
-RcppExport SEXP zhouyahomework1_CoordinateDescent(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP) {
+RcppExport SEXP _zhouyahomework1_CoordinateDescent(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,7 @@ END_RCPP
 }
 // ProximalOperator
 Rcpp::List ProximalOperator(const arma::mat& X, const arma::colvec& y, double lambda);
-RcppExport SEXP zhouyahomework1_ProximalOperator(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP) {
+RcppExport SEXP _zhouyahomework1_ProximalOperator(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -31,4 +31,15 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(ProximalOperator(X, y, lambda));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_zhouyahomework1_CoordinateDescent", (DL_FUNC) &_zhouyahomework1_CoordinateDescent, 3},
+    {"_zhouyahomework1_ProximalOperator", (DL_FUNC) &_zhouyahomework1_ProximalOperator, 3},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_zhouyahomework1(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
