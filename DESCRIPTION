@@ -1,0 +1,16 @@
+Package: zhouyahomework1
+Type: Package
+Title: Two algorithms for LASSO 
+Version: 1.0
+Date: 2017-10-15
+Author: Zhou Ya
+Maintainer: Zhou Ya <yazhou@ruc.edu.cn>
+Description: Coordinate Descent and Proximal Operator fo LASSO
+License: GNU GPLv3
+Imports: Rcpp (>= 0.12.7)
+LinkingTo: Rcpp, RcppArmadillo
+RoxygenNote: 6.0.1
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
